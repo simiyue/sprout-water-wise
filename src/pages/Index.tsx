@@ -16,12 +16,20 @@ import {
   MapPin,
   AlertTriangle,
   CheckCircle,
-  Clock
+  Clock,
+  Bell,
+  Brain,
+  TrendingUp,
+  Zap
 } from 'lucide-react';
 import IrrigationSchedule from '@/components/IrrigationSchedule';
 import SensorDashboard from '@/components/SensorDashboard';
 import FieldMap from '@/components/FieldMap';
 import WaterUsageChart from '@/components/WaterUsageChart';
+import NotificationCenter from '@/components/NotificationCenter';
+import WeatherInsights from '@/components/WeatherInsights';
+import AdvancedAnalytics from '@/components/AdvancedAnalytics';
+import SmartScheduler from '@/components/SmartScheduler';
 
 const Index = () => {
   const [activeField, setActiveField] = useState('field-1');
@@ -50,7 +58,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-      {/* Header */}
+      {/* Enhanced Header with Notifications */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -59,8 +67,8 @@ const Index = () => {
                 <Droplets className="h-8 w-8 text-green-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">SmartIrrigate</h1>
-                <p className="text-sm text-gray-600">Intelligent Farming Solutions</p>
+                <h1 className="text-2xl font-bold text-gray-900">SmartIrrigate Pro</h1>
+                <p className="text-sm text-gray-600">AI-Powered Intelligent Farming Solutions</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -68,6 +76,14 @@ const Index = () => {
                 <CheckCircle className="h-3 w-3 mr-1" />
                 System Online
               </Badge>
+              <Badge variant="outline" className="text-blue-600 border-blue-200">
+                <Brain className="h-3 w-3 mr-1" />
+                AI Active
+              </Badge>
+              <Button variant="outline" size="sm">
+                <Bell className="h-4 w-4 mr-2" />
+                <span className="bg-red-500 text-white text-xs rounded-full px-1 ml-1">3</span>
+              </Button>
               <Button variant="outline" size="sm">
                 <Settings className="h-4 w-4 mr-2" />
                 Settings
@@ -78,8 +94,8 @@ const Index = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* System Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Enhanced System Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Fields</CardTitle>
@@ -119,6 +135,20 @@ const Index = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">AI Efficiency</CardTitle>
+              <Brain className="h-4 w-4 text-purple-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">89%</div>
+              <p className="text-xs text-green-600 flex items-center">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                +5.2% this week
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">System Health</CardTitle>
               <CheckCircle className="h-4 w-4 text-green-500" />
             </CardHeader>
@@ -129,16 +159,22 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* Weather Widget */}
+        {/* Enhanced Weather Widget */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Sun className="h-5 w-5 mr-2 text-yellow-500" />
-              Weather Conditions
+            <CardTitle className="flex items-center justify-between">
+              <span className="flex items-center">
+                <Sun className="h-5 w-5 mr-2 text-yellow-500" />
+                Weather Conditions & AI Recommendations
+              </span>
+              <Badge className="bg-blue-500">
+                <Zap className="h-3 w-3 mr-1" />
+                Smart Adjustments Active
+              </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <div className="flex items-center space-x-2">
                 <Thermometer className="h-4 w-4 text-red-500" />
                 <span className="text-sm">Temperature: {weatherData.temperature}°F</span>
@@ -155,18 +191,25 @@ const Index = () => {
                 <Sun className="h-4 w-4 text-yellow-500" />
                 <span className="text-sm">Rain Chance: {weatherData.rainChance}%</span>
               </div>
+              <div className="flex items-center space-x-2 text-green-600">
+                <Brain className="h-4 w-4" />
+                <span className="text-sm font-medium">Rain detected - Auto-adjusting</span>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Main Dashboard Tabs */}
+        {/* Enhanced Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="sensors">Sensors</TabsTrigger>
+            <TabsTrigger value="smart-schedule">Smart Schedule</TabsTrigger>
             <TabsTrigger value="schedule">Schedule</TabsTrigger>
             <TabsTrigger value="fields">Fields</TabsTrigger>
+            <TabsTrigger value="weather">Weather</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="notifications">Alerts</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -174,10 +217,15 @@ const Index = () => {
               <SensorDashboard />
               <IrrigationSchedule />
             </div>
+            <NotificationCenter />
           </TabsContent>
 
           <TabsContent value="sensors" className="space-y-6">
             <SensorDashboard />
+          </TabsContent>
+
+          <TabsContent value="smart-schedule" className="space-y-6">
+            <SmartScheduler />
           </TabsContent>
 
           <TabsContent value="schedule" className="space-y-6">
@@ -188,8 +236,16 @@ const Index = () => {
             <FieldMap fields={fields} activeField={activeField} setActiveField={setActiveField} />
           </TabsContent>
 
+          <TabsContent value="weather" className="space-y-6">
+            <WeatherInsights />
+          </TabsContent>
+
           <TabsContent value="analytics" className="space-y-6">
-            <WaterUsageChart />
+            <AdvancedAnalytics />
+          </TabsContent>
+
+          <TabsContent value="notifications" className="space-y-6">
+            <NotificationCenter />
           </TabsContent>
         </Tabs>
       </div>
