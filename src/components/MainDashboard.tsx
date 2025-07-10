@@ -8,6 +8,7 @@ import NotificationCenter from '@/components/NotificationCenter';
 import WeatherInsights from '@/components/WeatherInsights';
 import AdvancedAnalytics from '@/components/AdvancedAnalytics';
 import SmartScheduler from '@/components/SmartScheduler';
+import WaterUsageChart from '@/components/WaterUsageChart';
 
 interface MainDashboardProps {
   fields: Array<{
@@ -23,7 +24,7 @@ interface MainDashboardProps {
 const MainDashboard: React.FC<MainDashboardProps> = ({ fields, activeField, setActiveField }) => {
   return (
     <Tabs defaultValue="overview" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-8">
+      <TabsList className="grid w-full grid-cols-9">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="sensors">Sensors</TabsTrigger>
         <TabsTrigger value="smart-schedule">Smart Schedule</TabsTrigger>
@@ -31,6 +32,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ fields, activeField, setA
         <TabsTrigger value="fields">Fields</TabsTrigger>
         <TabsTrigger value="weather">Weather</TabsTrigger>
         <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsTrigger value="usage">Usage</TabsTrigger>
         <TabsTrigger value="notifications">Alerts</TabsTrigger>
       </TabsList>
 
@@ -64,6 +66,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ fields, activeField, setA
 
       <TabsContent value="analytics" className="space-y-6">
         <AdvancedAnalytics />
+      </TabsContent>
+
+      <TabsContent value="usage" className="space-y-6">
+        <WaterUsageChart />
       </TabsContent>
 
       <TabsContent value="notifications" className="space-y-6">

@@ -14,7 +14,8 @@ import {
   Line,
   PieChart,
   Pie,
-  Cell
+  Cell,
+  ComposedChart
 } from 'recharts';
 import { 
   TrendingUp, 
@@ -136,7 +137,7 @@ const WaterUsageChart = () => {
             <TabsContent value="monthly" className="space-y-4">
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyData}>
+                  <ComposedChart data={monthlyData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis yAxisId="left" />
@@ -151,7 +152,7 @@ const WaterUsageChart = () => {
                       strokeWidth={3}
                       name="Efficiency (%)"
                     />
-                  </LineChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
               </div>
             </TabsContent>

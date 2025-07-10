@@ -3,70 +3,49 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { 
-  Calendar, 
-  Clock, 
+  Brain, 
   Droplets, 
-  Zap, 
-  Brain,
-  Settings,
-  Plus,
+  Thermometer, 
+  Cloud,
+  Save,
+  Zap,
+  TrendingUp,
+  Calendar,
   Target
 } from 'lucide-react';
 
 const SmartScheduler = () => {
-  const [aiEnabled, setAiEnabled] = useState(true);
-  const [moistureThreshold, setMoistureThreshold] = useState([30]);
-  const [schedules, setSchedules] = useState([
+  const [aiMode, setAiMode] = useState(true);
+  const [moistureThreshold, setMoistureThreshold] = useState([35]);
+  const [tempThreshold, setTempThreshold] = useState([80]);
+  const [rainDelay, setRainDelay] = useState([24]);
+
+  const aiRecommendations = [
     {
-      id: 1,
-      name: 'Smart Zone A',
       field: 'North Field - Tomatoes',
-      mode: 'moisture-based',
-      threshold: 35,
-      duration: 45,
-      efficiency: 92,
-      isActive: true,
-      lastTriggered: '2 hours ago',
-      predictedNext: 'Tomorrow 5:30 AM'
+      recommendation: 'Increase irrigation by 15% due to high temperature forecast',
+      confidence: 94,
+      waterSaving: '12%',
+      impact: 'High'
     },
     {
-      id: 2,
-      name: 'Weather-Adaptive Zone B',
       field: 'South Field - Corn',
-      mode: 'weather-adaptive',
-      threshold: 40,
-      duration: 60,
-      efficiency: 88,
-      isActive: true,
-      lastTriggered: '6 hours ago',
-      predictedNext: 'Today 8:00 PM (adjusted for rain)'
+      recommendation: 'Delay irrigation for 8 hours due to incoming rain',
+      confidence: 89,
+      waterSaving: '25%',
+      impact: 'Medium'
+    },
+    {
+      field: 'East Field - Lettuce',
+      recommendation: 'Maintain current schedule - optimal conditions',
+      confidence: 96,
+      waterSaving: '5%',
+      impact: 'Low'
     }
-  ]);
-
-  const getModeColor = (mode: string) => {
-    switch (mode) {
-      case 'moisture-based':
-        return 'bg-blue-500 hover:bg-blue-600';
-      case 'weather-adaptive':
-        return 'bg-green-500 hover:bg-green-600';
-      default:
-        return 'bg-gray-500 hover:bg-gray-600';
-    }
-  };
-
-  const getModeIcon = (mode: string) => {
-    switch (mode) {
-      case 'moisture-based':
-        return <Droplets className="h-3 w-3 mr-1" />;
-      case 'weather-adaptive':
-        return <Brain className="h-3 w-3 mr-1" />;
-      default:
-        return <Clock className="h-3 w-3 mr-1" />;
-    }
-  };
+  ];
 
   return (
     <div className="space-y-6">
@@ -76,144 +55,70 @@ const SmartScheduler = () => {
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center">
               <Brain className="h-5 w-5 mr-2 text-purple-600" />
-              Smart Irrigation Control
+              AI Smart Scheduling
             </span>
-            <Switch
-              checked={aiEnabled}
-              onCheckedChange={setAiEnabled}
-            />
+            <div className="flex items-center space-x-2">
+              <span className="text-sm">AI Mode</span>
+              <Switch checked={aiMode} onCheckedChange={setAiMode} />
+            </div>
           </CardTitle>
           <CardDescription>
-            AI-powered irrigation scheduling based on soil conditions, weather, and crop needs
+            Let AI optimize your irrigation schedules based on weather, soil conditions, and plant needs
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-              <div>
-                <h4 className="font-medium text-purple-800">AI Optimization Status</h4>
-                <p className="text-sm text-purple-600">
-                  {aiEnabled ? 'Active - Making smart adjustments' : 'Disabled - Manual control only'}
-                </p>
-              </div>
-              <Badge className={aiEnabled ? 'bg-purple-500' : 'bg-gray-500'}>
-                {aiEnabled ? 'AI Active' : 'Manual'}
-              </Badge>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center">
+                <Droplets className="h-4 w-4 mr-2 text-blue-500" />
+                Soil Moisture Threshold: {moistureThreshold[0]}%
+              </label>
+              <Slider
+                value={moistureThreshold}
+                onValueChange={setMoistureThreshold}
+                max={60}
+                min={20}
+                step={5}
+                className="w-full"
+              />
             </div>
 
-            {aiEnabled && (
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Global Moisture Threshold: {moistureThreshold[0]}%
-                  </label>
-                  <Slider
-                    value={moistureThreshold}
-                    onValueChange={setMoistureThreshold}
-                    max={60}
-                    min={15}
-                    step={5}
-                    className="w-full"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <div className="text-lg font-bold text-green-600">15%</div>
-                    <div className="text-xs text-green-600">Water Saved</div>
-                  </div>
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <div className="text-lg font-bold text-blue-600">8.2</div>
-                    <div className="text-xs text-blue-600">AI Score</div>
-                  </div>
-                  <div className="p-3 bg-orange-50 rounded-lg">
-                    <div className="text-lg font-bold text-orange-600">3</div>
-                    <div className="text-xs text-orange-600">Auto Adjustments</div>
-                  </div>
-                </div>
-              </div>
-            )}
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center">
+                <Thermometer className="h-4 w-4 mr-2 text-orange-500" />
+                Temperature Trigger: {tempThreshold[0]}°F
+              </label>
+              <Slider
+                value={tempThreshold}
+                onValueChange={setTempThreshold}
+                max={100}
+                min={60}
+                step={5}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center">
+                <Cloud className="h-4 w-4 mr-2 text-gray-500" />
+                Rain Delay: {rainDelay[0]} hours
+              </label>
+              <Slider
+                value={rainDelay}
+                onValueChange={setRainDelay}
+                max={48}
+                min={6}
+                step={6}
+                className="w-full"
+              />
+            </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Smart Schedules */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span className="flex items-center">
-              <Target className="h-5 w-5 mr-2 text-green-600" />
-              Smart Irrigation Schedules
-            </span>
-            <Button size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Smart Schedule
+          <div className="flex justify-end mt-6">
+            <Button>
+              <Save className="h-4 w-4 mr-2" />
+              Save AI Settings
             </Button>
-          </CardTitle>
-          <CardDescription>
-            Adaptive schedules that respond to real-time conditions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {schedules.map((schedule) => (
-              <div
-                key={schedule.id}
-                className="p-4 border rounded-lg hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-green-50 rounded-lg">
-                      <Zap className="h-4 w-4 text-green-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">{schedule.name}</h4>
-                      <p className="text-sm text-gray-600">{schedule.field}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className={getModeColor(schedule.mode)}>
-                      {getModeIcon(schedule.mode)}
-                      {schedule.mode.replace('-', ' ')}
-                    </Badge>
-                    <Switch
-                      checked={schedule.isActive}
-                      onCheckedChange={() => {}}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                  <div>
-                    <p className="text-gray-500">Threshold</p>
-                    <p className="font-medium">{schedule.threshold}% moisture</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500">Duration</p>
-                    <p className="font-medium">{schedule.duration} minutes</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500">Efficiency</p>
-                    <p className="font-medium text-green-600">{schedule.efficiency}%</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500">Last Triggered</p>
-                    <p className="font-medium">{schedule.lastTriggered}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t">
-                  <div className="text-sm">
-                    <span className="text-gray-500">Next predicted run: </span>
-                    <span className="font-medium">{schedule.predictedNext}</span>
-                  </div>
-                  <Button size="sm" variant="outline">
-                    <Settings className="h-3 w-3 mr-1" />
-                    Configure
-                  </Button>
-                </div>
-              </div>
-            ))}
           </div>
         </CardContent>
       </Card>
@@ -222,30 +127,103 @@ const SmartScheduler = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Brain className="h-5 w-5 mr-2 text-purple-600" />
-            AI Recommendations
+            <Zap className="h-5 w-5 mr-2 text-yellow-500" />
+            Current AI Recommendations
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-medium text-blue-800 mb-1">Optimize Zone A Schedule</h4>
-              <p className="text-sm text-blue-700 mb-2">
-                Consider reducing irrigation frequency by 20% - soil retention analysis shows good moisture holding.
-              </p>
-              <Button size="sm" variant="outline">Apply Recommendation</Button>
-            </div>
-            
-            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-              <h4 className="font-medium text-green-800 mb-1">Weather Integration Success</h4>
-              <p className="text-sm text-green-700 mb-2">
-                Automatic schedule adjustment saved 340 gallons this week by leveraging rain predictions.
-              </p>
-              <Button size="sm" variant="outline">View Details</Button>
-            </div>
+          <div className="space-y-4">
+            {aiRecommendations.map((rec, index) => (
+              <div
+                key={index}
+                className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h4 className="font-medium">{rec.field}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{rec.recommendation}</p>
+                  </div>
+                  <div className="flex flex-col items-end space-y-2">
+                    <Badge 
+                      variant="outline" 
+                      className={
+                        rec.impact === 'High' ? 'text-red-600 border-red-200' :
+                        rec.impact === 'Medium' ? 'text-yellow-600 border-yellow-200' :
+                        'text-green-600 border-green-200'
+                      }
+                    >
+                      {rec.impact} Impact
+                    </Badge>
+                    <div className="text-xs text-gray-500">
+                      {rec.confidence}% confidence
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-sm text-green-600">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    {rec.waterSaving} water savings
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button size="sm" variant="outline">
+                      Apply
+                    </Button>
+                    <Button size="sm" variant="ghost">
+                      Dismiss
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Performance Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Target className="h-4 w-4 text-blue-500" />
+              <span className="text-sm text-gray-600">AI Efficiency</span>
+            </div>
+            <div className="text-2xl font-bold mt-1">94.2%</div>
+            <div className="text-xs text-green-600 flex items-center mt-1">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              +2.1% this week
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Droplets className="h-4 w-4 text-green-500" />
+              <span className="text-sm text-gray-600">Water Saved</span>
+            </div>
+            <div className="text-2xl font-bold mt-1">1,247 gal</div>
+            <div className="text-xs text-green-600 flex items-center mt-1">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              This month
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-4 w-4 text-purple-500" />
+              <span className="text-sm text-gray-600">Auto Adjustments</span>
+            </div>
+            <div className="text-2xl font-bold mt-1">47</div>
+            <div className="text-xs text-green-600 flex items-center mt-1">
+              <TrendingUp className="h-3 w-3 mr-1" />
+              Last 7 days
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
